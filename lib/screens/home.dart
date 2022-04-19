@@ -73,10 +73,6 @@ class _HomePageState extends State<HomePage> {
               },
             )
           ]),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.search),
-        onPressed: () {},
-      ),
       body: Column(
         children: [
           StreamBuilder(
@@ -96,13 +92,25 @@ class _HomePageState extends State<HomePage> {
                       shrinkWrap: true,
                       physics: BouncingScrollPhysics(),
                       itemBuilder: (context, index) {
-                        return Card(
-                          child: ListTile(
-                            tileColor: Colors.deepOrange.withOpacity(0.3),
-                            title: Text(snapshot.data.docs[index]['lid']),
-                            //subtitle: Text(snapshot.data.docs[index]['email']),
-                            trailing: IconButton(
-                              onPressed: () {
+                        return Container(
+                          height: MediaQuery.of(context).size.height /
+                                  snapshot.data.docs.length -
+                              30,
+                          width: MediaQuery.of(context).size.width,
+                          child: Card(
+                            elevation: 10,
+                            child: ListTile(
+                              tileColor:
+                                  Colors.indigo.shade900.withOpacity(0.8),
+                              title: Text(
+                                snapshot.data.docs[index]['lid'],
+                                style: const TextStyle(
+                                  fontSize: 30,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              onTap: () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -115,7 +123,11 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 );
                               },
-                              icon: Icon(Icons.chair),
+                              //subtitle: Text(snapshot.data.docs[index]['email']),
+                              trailing: IconButton(
+                                onPressed: () {},
+                                icon: Icon(Icons.chair),
+                              ),
                             ),
                           ),
                         );
