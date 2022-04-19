@@ -24,13 +24,20 @@ class SeatScreen extends StatefulWidget {
 }
 
 class _SeatScreenState extends State<SeatScreen> {
-  final _postController = TextEditingController();
+  final _floorController = TextEditingController();
+  final _numberController = TextEditingController();
+  final _chatController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   CollectionReference seats =
       FirebaseFirestore.instance.collection("locations");
-  late String valueText;
-  late String seatText;
+  late String valueFloorText;
+  late String valueChatText;
+  late String valueNumberText;
+  late String floorText;
+  late String chatText;
+  late String numberText;
 
   @override
   Widget build(BuildContext context) {
@@ -126,14 +133,42 @@ class _SeatScreenState extends State<SeatScreen> {
         builder: (context) {
           return AlertDialog(
             title: Text('Add Seat'),
-            content: TextField(
-              onChanged: (value) {
-                setState(() {
-                  valueText = value;
-                });
-              },
-              controller: _postController,
-              decoration: InputDecoration(hintText: "Message"),
+            content: Column(
+              children: <Widget>[
+                TextField(
+                  onChanged: (value) {
+                    setState(
+                      () {
+                        valueFloorText = value;
+                      },
+                    );
+                  },
+                  controller: _floorController,
+                  decoration: InputDecoration(hintText: "Floor"),
+                ),
+                TextField(
+                  onChanged: (value2) {
+                    setState(
+                      () {
+                        valueChatText = value2;
+                      },
+                    );
+                  },
+                  controller: _chatController,
+                  decoration: InputDecoration(hintText: "Open to Chat?"),
+                ),
+                TextField(
+                  onChanged: (value3) {
+                    setState(
+                      () {
+                        valueNumberText = value3;
+                      },
+                    );
+                  },
+                  controller: _numberController,
+                  decoration: InputDecoration(hintText: "How many seats open?"),
+                ),
+              ],
             ),
             actions: <Widget>[
               FlatButton(
@@ -151,12 +186,19 @@ class _SeatScreenState extends State<SeatScreen> {
                 textColor: Colors.white,
                 child: Text('Add Seat'),
                 onPressed: () async {
-                  seatText = valueText;
+                  floorText = valueFloorText;
+                  numberText = valueNumberText;
+                  chatText = valueChatText;
                   await _db
                       .collection("locations")
                       .doc(widget.locationId)
                       .collection("seats")
-                      .add({"message": seatText, "Time": DateTime.now()});
+                      .add({
+                    "floor": floorText,
+                    "Time": DateTime.now(),
+                    "amount": numberText,
+                    "chat": chatText
+                  });
                   setState(() {
                     Navigator.pop(context);
                   });
