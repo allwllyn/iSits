@@ -100,35 +100,31 @@ class _HomePageState extends State<HomePage> {
                           child: Card(
                             elevation: 10,
                             child: ListTile(
-                              tileColor:
-                                  Colors.indigo.shade900.withOpacity(0.8),
-                              title: Text(
-                                snapshot.data.docs[index]['lid'],
-                                style: const TextStyle(
-                                  fontSize: 30,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => SeatScreen(
-                                      locationId: snapshot.data.docs[index]
-                                          ['lid'],
-                                      receiverName: snapshot.data.docs[index]
-                                          ['lid'],
+                                tileColor:
+                                    Colors.indigo.shade900.withOpacity(0.8),
+                                title: Center(
+                                  child: Text(
+                                    snapshot.data.docs[index]['lid'],
+                                    style: const TextStyle(
+                                      fontSize: 30,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                );
-                              },
-                              //subtitle: Text(snapshot.data.docs[index]['email']),
-                              trailing: IconButton(
-                                onPressed: () {},
-                                icon: Icon(Icons.chair),
-                              ),
-                            ),
+                                ),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => SeatScreen(
+                                        locationId: snapshot.data.docs[index]
+                                            ['lid'],
+                                        receiverName: snapshot.data.docs[index]
+                                            ['lid'],
+                                      ),
+                                    ),
+                                  );
+                                }),
                           ),
                         );
                       });
