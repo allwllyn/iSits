@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "861560183112",
+    "project_id": "isits-ef486",
+    "storage_bucket": "isits-ef486.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:861560183112:android:e8dbf204fa7d688f32fb7d",
+        "android_client_info": {
+          "package_name": "com.toastjar.isits"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "861560183112-3fl9phc3p3qvnu1qittmm912t5rp53lb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4lAT6WJGM7RH32FCk_H0PYQE5O9eaLQE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "861560183112-3fl9phc3p3qvnu1qittmm912t5rp53lb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
