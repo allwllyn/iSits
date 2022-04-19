@@ -1,10 +1,12 @@
 //import 'dart:html';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:isits/models/user.dart';
+import 'package:provider/provider.dart';
 
-class SeatScreen extends StatelessWidget {
+class SeatScreen extends StatefulWidget {
   //final UserModel currentUser;
   final String locationId;
   final String receiverName;
@@ -16,6 +18,19 @@ class SeatScreen extends StatelessWidget {
     required this.receiverName,
     //required this.receiverImage,
   });
+
+  @override
+  State<SeatScreen> createState() => _SeatScreenState();
+}
+
+class _SeatScreenState extends State<SeatScreen> {
+  final _postController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
+  CollectionReference seats =
+      FirebaseFirestore.instance.collection("locations");
+  late String valueText;
+  late String seatText;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +50,7 @@ class SeatScreen extends StatelessWidget {
               width: 5,
             ),
             Text(
-              receiverName,
+              widget.receiverName,
               style: TextStyle(fontSize: 20),
             ),
           ],
@@ -43,7 +58,9 @@ class SeatScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () {},
+        onPressed: () {
+          addSeat();
+        },
       ),
       body: Column(
         children: [
@@ -60,7 +77,7 @@ class SeatScreen extends StatelessWidget {
               child: StreamBuilder(
                   stream: FirebaseFirestore.instance
                       .collection('locations')
-                      .doc(locationId)
+                      .doc(widget.locationId)
                       .collection('seats')
                       .snapshots(),
                   builder: (context, AsyncSnapshot snapshot) {
@@ -96,5 +113,57 @@ class SeatScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void addSeat() async {
+    //await _db.collection("posts").add({"message": "Random stuff can go here"});
+    _displayTextInputDialog(context);
+  }
+
+  Future<void> _displayTextInputDialog(BuildContext context) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Add Seat'),
+            content: TextField(
+              onChanged: (value) {
+                setState(() {
+                  valueText = value;
+                });
+              },
+              controller: _postController,
+              decoration: InputDecoration(hintText: "Message"),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                color: Colors.red,
+                textColor: Colors.white,
+                child: Text('CANCEL'),
+                onPressed: () {
+                  setState(() {
+                    Navigator.pop(context);
+                  });
+                },
+              ),
+              FlatButton(
+                color: Colors.green,
+                textColor: Colors.white,
+                child: Text('Add Seat'),
+                onPressed: () async {
+                  seatText = valueText;
+                  await _db
+                      .collection("locations")
+                      .doc(widget.locationId)
+                      .collection("seats")
+                      .add({"message": seatText, "Time": DateTime.now()});
+                  setState(() {
+                    Navigator.pop(context);
+                  });
+                },
+              ),
+            ],
+          );
+        });
   }
 }
