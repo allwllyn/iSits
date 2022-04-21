@@ -60,7 +60,6 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: Colors.blueAccent,
       appBar: AppBar(
-          //foregroundColor: Colors.black.withOpacity(0.1),
           automaticallyImplyLeading: false,
           title: Text('Locations'),
           centerTitle: true,
@@ -98,36 +97,45 @@ class _HomePageState extends State<HomePage> {
                               30,
                           width: MediaQuery.of(context).size.width,
                           child: Padding(
-                            padding: EdgeInsets.fromLTRB(3, 3, 3, 0),
+                            padding: EdgeInsets.fromLTRB(3, 4, 3, 0),
                             child: ClipRRect(
                               clipBehavior: Clip.hardEdge,
-                              borderRadius: BorderRadius.circular(20),
+                              borderRadius: BorderRadius.circular(15),
                               child: GestureDetector(
                                   child: Container(
-                                      color: Colors.indigo.shade900
-                                          .withOpacity(0.8),
-                                      child: Center(
-                                        child: Text(
-                                          snapshot.data.docs[index]['lid'],
-                                          style: const TextStyle(
-                                            fontSize: 30,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      )),
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => SeatScreen(
-                                          locationId: snapshot.data.docs[index]
-                                              ['lid'],
-                                          receiverName:
-                                              snapshot.data.docs[index]['lid'],
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: NetworkImage(
+                                            snapshot.data.docs[index]['image']),
+                                        fit: BoxFit.cover,
+                                        colorFilter: ColorFilter.mode(
+                                            Colors.indigo.shade900
+                                                .withOpacity(0.9),
+                                            BlendMode.modulate),
+                                      ),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        snapshot.data.docs[index]['lid'],
+                                        style: const TextStyle(
+                                          fontSize: 30,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                    );
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => SeatScreen(
+                                            locationId: snapshot
+                                                .data.docs[index]['lid'],
+                                            receiverName: snapshot
+                                                .data.docs[index]['lid'],
+                                          ),
+                                        ));
                                   }),
                             ),
                           ),
