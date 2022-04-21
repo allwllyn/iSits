@@ -5,33 +5,28 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:isits/models/user.dart';
 import 'package:provider/provider.dart';
-import 'package:isits/screens/seat_info_screen.dart';
 
-class SeatScreen extends StatefulWidget {
-  //final UserModel currentUser;
+class SeatInfoScreen extends StatefulWidget {
+  final String seatId;
   final String locationId;
-  final String receiverName;
-  //final String receiverImage;
 
-  SeatScreen({
-    //required this.currentUser,
+  SeatInfoScreen({
+    required this.seatId,
     required this.locationId,
-    required this.receiverName,
-    //required this.receiverImage,
   });
 
   @override
-  State<SeatScreen> createState() => _SeatScreenState();
+  State<SeatInfoScreen> createState() => _SeatInfoScreenState();
 }
 
-class _SeatScreenState extends State<SeatScreen> {
+class _SeatInfoScreenState extends State<SeatInfoScreen> {
   final _floorController = TextEditingController();
   final _numberController = TextEditingController();
   final _chatController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
-  CollectionReference seats =
+  CollectionReference location =
       FirebaseFirestore.instance.collection("locations");
   late String valueFloorText;
   late String valueChatText;
@@ -45,21 +40,16 @@ class _SeatScreenState extends State<SeatScreen> {
     return Scaffold(
       backgroundColor: Colors.indigo.shade900,
       appBar: AppBar(
-        //backgroundColor: Colors.black.withOpacity(0.1),
         title: Row(
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(80),
-              //child: Image.network(
-              //receiverImage,
-              // height: 35,
-              //),
             ),
             SizedBox(
               width: 5,
             ),
             Text(
-              widget.receiverName,
+              widget.locationId + " Seat",
               style: TextStyle(fontSize: 20),
             ),
           ],
@@ -68,7 +58,7 @@ class _SeatScreenState extends State<SeatScreen> {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {
-          addSeat();
+          message();
         },
       ),
       body: Column(
@@ -84,42 +74,24 @@ class _SeatScreenState extends State<SeatScreen> {
                 ),
               ),
               child: StreamBuilder(
-                  stream: FirebaseFirestore.instance
-                      .collection('locations')
+                  stream: location
                       .doc(widget.locationId)
                       .collection('seats')
+                      .doc(widget.seatId)
                       .snapshots(),
                   builder: (context, AsyncSnapshot snapshot) {
                     if (snapshot.hasData) {
-                      if (snapshot.data.docs.length < 1) {
-                        return Center(
-                          child: Text("No people offering seats"),
-                        );
-                      }
                       return ListView.builder(
-                          itemCount: snapshot.data.docs.length,
+                          itemCount: 1,
                           physics: BouncingScrollPhysics(),
                           itemBuilder: (context, index) {
                             return Card(
                               child: ListTile(
-                                title: Text("Floor: " +
-                                    snapshot.data.docs[index]['floor'] +
-                                    " Chat: " +
-                                    snapshot.data.docs[index]['chat']),
-                                subtitle: Text("Open Seats: " +
-                                    snapshot.data.docs[index]['amount']),
+                                title: Text("Description: " +
+                                    snapshot.data['description']),
+                                subtitle:
+                                    Text("Chat: " + snapshot.data['chat']),
                                 tileColor: Colors.blue,
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => SeatInfoScreen(
-                                          locationId: widget.locationId,
-                                          seatId: snapshot.data.docs[index]
-                                              ['sid'],
-                                        ),
-                                      ));
-                                },
                               ),
                             );
                           });
@@ -135,8 +107,7 @@ class _SeatScreenState extends State<SeatScreen> {
     );
   }
 
-  void addSeat() async {
-    //await _db.collection("posts").add({"message": "Random stuff can go here"});
+  void message() async {
     _displayTextInputDialog(context);
   }
 
@@ -145,7 +116,7 @@ class _SeatScreenState extends State<SeatScreen> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Add Seat'),
+            title: Text('Message user'),
             content: Column(
               children: <Widget>[
                 TextField(
@@ -197,7 +168,7 @@ class _SeatScreenState extends State<SeatScreen> {
               FlatButton(
                 color: Colors.green,
                 textColor: Colors.white,
-                child: Text('Add Seat'),
+                child: Text('Send'),
                 onPressed: () async {
                   floorText = valueFloorText;
                   numberText = valueNumberText;
