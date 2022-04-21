@@ -57,12 +57,6 @@ class _SeatInfoScreenState extends State<SeatInfoScreen> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.message),
-        onPressed: () {
-          message();
-        },
-      ),
       body: Column(
         children: [
           Expanded(
@@ -110,6 +104,16 @@ class _SeatInfoScreenState extends State<SeatInfoScreen> {
                                   color: Colors.white,
                                 ),
                               ),
+                              Spacer(),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: Colors.lightBlue,
+                                  onPrimary: Colors.white,
+                                  minimumSize: Size(double.infinity, 50),
+                                ),
+                                onPressed: () {},
+                                child: Text('Message'),
+                              )
                             ],
                           ),
                         )));
