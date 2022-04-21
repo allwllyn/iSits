@@ -92,39 +92,44 @@ class _HomePageState extends State<HomePage> {
                       shrinkWrap: true,
                       physics: BouncingScrollPhysics(),
                       itemBuilder: (context, index) {
-                        return Container(
+                        return SizedBox(
                           height: MediaQuery.of(context).size.height /
                                   snapshot.data.docs.length -
                               30,
                           width: MediaQuery.of(context).size.width,
-                          child: Card(
-                            elevation: 10,
-                            child: ListTile(
-                                tileColor:
-                                    Colors.indigo.shade900.withOpacity(0.8),
-                                title: Center(
-                                  child: Text(
-                                    snapshot.data.docs[index]['lid'],
-                                    style: const TextStyle(
-                                      fontSize: 30,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => SeatScreen(
-                                        locationId: snapshot.data.docs[index]
-                                            ['lid'],
-                                        receiverName: snapshot.data.docs[index]
-                                            ['lid'],
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(3, 3, 3, 0),
+                            child: ClipRRect(
+                              clipBehavior: Clip.hardEdge,
+                              borderRadius: BorderRadius.circular(20),
+                              child: GestureDetector(
+                                  child: Container(
+                                      color: Colors.indigo.shade900
+                                          .withOpacity(0.8),
+                                      child: Center(
+                                        child: Text(
+                                          snapshot.data.docs[index]['lid'],
+                                          style: const TextStyle(
+                                            fontSize: 30,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      )),
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => SeatScreen(
+                                          locationId: snapshot.data.docs[index]
+                                              ['lid'],
+                                          receiverName:
+                                              snapshot.data.docs[index]['lid'],
+                                        ),
                                       ),
-                                    ),
-                                  );
-                                }),
+                                    );
+                                  }),
+                            ),
                           ),
                         );
                       });
