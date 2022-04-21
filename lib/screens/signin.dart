@@ -84,6 +84,7 @@ class _SignIn extends State<SignInPage> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 16, vertical: 12),
                             child: TextFormField(
+                                obscureText: true,
                                 decoration: InputDecoration(
                                   fillColor: Colors.white10.withOpacity(0.7),
                                   filled: true,

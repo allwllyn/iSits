@@ -1,7 +1,7 @@
 //import 'dart:html';
-//import 'dart:html';
 
 import 'package:isits/models/user.dart';
+import 'package:isits/screens/my_seats.dart';
 import 'package:isits/screens/seats_screen.dart';
 import 'package:isits/services/auth_bloc.dart';
 import 'package:isits/screens/signin.dart';
@@ -61,6 +61,16 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: Colors.blueAccent,
       appBar: AppBar(
           automaticallyImplyLeading: false,
+          leading: IconButton(
+            icon: const Icon(Icons.chair_sharp),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                    builder: (context) =>
+                        MySeatsScreen(userId: _auth.currentUser!.uid)),
+              );
+            },
+          ),
           title: Text('Locations'),
           centerTitle: true,
           backgroundColor: Colors.black,

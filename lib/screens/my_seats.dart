@@ -7,28 +7,27 @@ import 'package:isits/models/user.dart';
 import 'package:provider/provider.dart';
 import 'package:isits/screens/seat_info_screen.dart';
 
-class SeatScreen extends StatefulWidget {
+class MySeatsScreen extends StatefulWidget {
   //final UserModel currentUser;
-  final String locationId;
-  final String receiverName;
+  final String userId;
+  //final String receiverName;
   //final String receiverImage;
 
-  SeatScreen({
+  MySeatsScreen({
     //required this.currentUser,
-    required this.locationId,
-    required this.receiverName,
+    required this.userId,
+    //required this.receiverName,
     //required this.receiverImage,
   });
 
   @override
-  State<SeatScreen> createState() => _SeatScreenState();
+  State<MySeatsScreen> createState() => _MySeatsScreenState();
 }
 
-class _SeatScreenState extends State<SeatScreen> {
+class _MySeatsScreenState extends State<MySeatsScreen> {
   final _floorController = TextEditingController();
   final _numberController = TextEditingController();
   final _chatController = TextEditingController();
-  final _describeController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -37,11 +36,9 @@ class _SeatScreenState extends State<SeatScreen> {
   late String valueFloorText;
   late String valueChatText;
   late String valueNumberText;
-  late String valueDescribeText;
   late String floorText;
   late String chatText;
   late String numberText;
-  late String describeText;
 
   @override
   Widget build(BuildContext context) {
@@ -62,17 +59,11 @@ class _SeatScreenState extends State<SeatScreen> {
               width: 5,
             ),
             Text(
-              widget.receiverName,
+              'my seats',
               style: TextStyle(fontSize: 20),
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () {
-          addSeat();
-        },
       ),
       body: Column(
         children: [
@@ -89,16 +80,11 @@ class _SeatScreenState extends State<SeatScreen> {
               child: StreamBuilder(
                   stream: FirebaseFirestore.instance
                       .collection('locations')
-                      .doc(widget.locationId)
+                      .doc('Library')
                       .collection('seats')
                       .snapshots(),
                   builder: (context, AsyncSnapshot snapshot) {
                     if (snapshot.hasData) {
-                      if (snapshot.data.docs.length < 1) {
-                        return Center(
-                          child: Text("No people offering seats"),
-                        );
-                      }
                       return ListView.builder(
                           itemCount: snapshot.data.docs.length,
                           physics: BouncingScrollPhysics(),
@@ -113,15 +99,7 @@ class _SeatScreenState extends State<SeatScreen> {
                                     snapshot.data.docs[index]['amount']),
                                 tileColor: Colors.blue,
                                 onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => SeatInfoScreen(
-                                          locationId: widget.locationId,
-                                          seatId: snapshot.data.docs[index]
-                                              .id, //TODO: fix this
-                                        ),
-                                      ));
+                                  editSeat();
                                 },
                               ),
                             );
@@ -138,7 +116,7 @@ class _SeatScreenState extends State<SeatScreen> {
     );
   }
 
-  void addSeat() async {
+  void editSeat() async {
     //await _db.collection("posts").add({"message": "Random stuff can go here"});
     _displayTextInputDialog(context);
   }
@@ -148,7 +126,7 @@ class _SeatScreenState extends State<SeatScreen> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Add Seat'),
+            title: Text('Delete?'),
             content: Column(
               children: <Widget>[
                 TextField(
@@ -163,17 +141,6 @@ class _SeatScreenState extends State<SeatScreen> {
                   decoration: InputDecoration(hintText: "Floor"),
                 ),
                 TextField(
-                  onChanged: (value2) {
-                    setState(
-                      () {
-                        valueChatText = value2;
-                      },
-                    );
-                  },
-                  controller: _chatController,
-                  decoration: InputDecoration(hintText: "Open to Chat?"),
-                ),
-                TextField(
                   onChanged: (value3) {
                     setState(
                       () {
@@ -183,18 +150,6 @@ class _SeatScreenState extends State<SeatScreen> {
                   },
                   controller: _numberController,
                   decoration: InputDecoration(hintText: "How many seats open?"),
-                ),
-                TextField(
-                  onChanged: (value4) {
-                    setState(
-                      () {
-                        valueDescribeText = value4;
-                      },
-                    );
-                  },
-                  controller: _describeController,
-                  decoration: InputDecoration(
-                      hintText: "Give a description of where it is"),
                 ),
               ],
             ),
@@ -212,25 +167,15 @@ class _SeatScreenState extends State<SeatScreen> {
               FlatButton(
                 color: Colors.green,
                 textColor: Colors.white,
-                child: Text('Add Seat'),
+                child: Text('Delete Seat'),
                 onPressed: () async {
-                  floorText = valueFloorText;
-                  numberText = valueNumberText;
-                  chatText = valueChatText;
-                  describeText = valueDescribeText;
                   await _db
                       .collection("locations")
-                      .doc(widget.locationId)
+                      .doc('Library')
                       .collection("seats")
                       .doc(_auth.currentUser?.uid)
-                      .set({
-                    "floor": floorText,
-                    "Time": DateTime.now(),
-                    "amount": numberText,
-                    "chat": chatText,
-                    "description": describeText,
-                    //"uid": _auth.currentUser?.uid
-                  });
+                      .delete();
+
                   setState(() {
                     Navigator.pop(context);
                   });
