@@ -9,6 +9,8 @@ import 'package:provider/provider.dart';
 class SeatInfoScreen extends StatefulWidget {
   final String seatId;
   final String locationId;
+  //comment for testing
+  //checking
 
   SeatInfoScreen({
     required this.seatId,
@@ -56,7 +58,7 @@ class _SeatInfoScreenState extends State<SeatInfoScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.message),
         onPressed: () {
           message();
         },
