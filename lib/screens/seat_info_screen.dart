@@ -64,44 +64,60 @@ class _SeatInfoScreenState extends State<SeatInfoScreen> {
       body: Column(
         children: [
           Expanded(
-            child: Container(
-              padding: EdgeInsets.all(10),
+            /*child: Container(
+              padding: EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: Colors.indigo.shade900,
+                color: Colors.indigo.shade500,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(25),
                   topRight: Radius.circular(25),
                 ),
-              ),
-              child: StreamBuilder(
-                  stream: location
-                      .doc(widget.locationId)
-                      .collection('seats')
-                      .doc(widget.seatId)
-                      .snapshots(),
-                  builder: (context, AsyncSnapshot snapshot) {
-                    if (snapshot.hasData) {
-                      return ListView.builder(
-                          itemCount: 1,
-                          physics: BouncingScrollPhysics(),
-                          itemBuilder: (context, index) {
-                            return Card(
-                              child: ListTile(
-                                title: Text("Description: " +
-                                    snapshot.data['description']),
-                                subtitle:
-                                    Text("Chat: " + snapshot.data['chat']),
-                                tileColor: Colors.blue,
+              ),*/
+            child: StreamBuilder(
+                stream: location
+                    .doc(widget.locationId)
+                    .collection('seats')
+                    .doc(widget.seatId)
+                    .snapshots(),
+                builder: (context, AsyncSnapshot snapshot) {
+                  if (snapshot.hasData) {
+                    return Card(
+                        margin: EdgeInsets.all(20),
+                        elevation: 10,
+                        color: Colors.indigo.shade500,
+                        child: (Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Text(
+                                "Description: " + snapshot.data['description'],
+                                //textAlign: TextAlign.left,
+                                style: const TextStyle(
+                                  //fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                  //fontFamily:
+                                ),
                               ),
-                            );
-                          });
-                    }
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }),
-            ),
+                              Text(
+                                "\n\nOpen to chat: " + snapshot.data['chat'],
+                                //textAlign: TextAlign.left,
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )));
+                  }
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }),
           ),
+          //),
         ],
       ),
     );
