@@ -31,8 +31,7 @@ class _MySeatsScreenState extends State<MySeatsScreen> {
   final _formKey = GlobalKey<FormState>();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
-  CollectionReference seats =
-      FirebaseFirestore.instance.collection("locations");
+  CollectionReference seats = FirebaseFirestore.instance.collection("seats");
   late String valueFloorText;
   late String valueChatText;
   late String valueNumberText;
@@ -52,14 +51,14 @@ class _MySeatsScreenState extends State<MySeatsScreen> {
               borderRadius: BorderRadius.circular(80),
               //child: Image.network(
               //receiverImage,
-              // height: 35,
+              //height: 35,
               //),
             ),
             SizedBox(
               width: 5,
             ),
             Text(
-              'my seats',
+              'My Seats',
               style: TextStyle(fontSize: 20),
             ),
           ],
@@ -78,36 +77,39 @@ class _MySeatsScreenState extends State<MySeatsScreen> {
                 ),
               ),
               child: StreamBuilder(
-                  stream: FirebaseFirestore.instance
-                      .collection('locations')
-                      .doc('Library')
-                      .collection('seats')
+                  stream: seats
+                      .where('sid', isEqualTo: _auth.currentUser?.uid)
+                      //.doc(_auth.currentUser?.uid)
                       .snapshots(),
                   builder: (context, AsyncSnapshot snapshot) {
                     if (snapshot.hasData) {
-                      return ListView.builder(
-                          itemCount: snapshot.data.docs.length,
-                          physics: BouncingScrollPhysics(),
-                          itemBuilder: (context, index) {
-                            return Card(
-                              child: ListTile(
-                                title: Text("Floor: " +
-                                    snapshot.data.docs[index]['floor'] +
-                                    " Chat: " +
-                                    snapshot.data.docs[index]['chat']),
-                                subtitle: Text("Open Seats: " +
-                                    snapshot.data.docs[index]['amount']),
-                                tileColor: Colors.blue,
-                                onTap: () {
-                                  editSeat();
-                                },
-                              ),
-                            );
-                          });
+                      if (snapshot.data.docs.length > 0) {
+                        return ListView.builder(
+                            itemCount: 1,
+                            physics: BouncingScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              return Card(
+                                child: ListTile(
+                                  title: Text("Floor: " +
+                                      snapshot.data.docs[index]['floor'] +
+                                      " Chat: " +
+                                      snapshot.data.docs[index]['chat']),
+                                  subtitle: Text("Open Seats: " +
+                                      snapshot.data.docs[index]['amount']),
+                                  tileColor: Colors.blue,
+                                  onTap: () {
+                                    editSeat();
+                                  },
+                                ),
+                              );
+                            });
+                      }
                     }
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
+                    return const Center(
+                        child: Text(
+                      "You are not currently offering a seat",
+                      style: TextStyle(fontSize: 20, color: Colors.white),
+                    ));
                   }),
             ),
           ),
@@ -129,27 +131,8 @@ class _MySeatsScreenState extends State<MySeatsScreen> {
             title: Text('Delete?'),
             content: Column(
               children: <Widget>[
-                TextField(
-                  onChanged: (value) {
-                    setState(
-                      () {
-                        valueFloorText = value;
-                      },
-                    );
-                  },
-                  controller: _floorController,
-                  decoration: InputDecoration(hintText: "Floor"),
-                ),
-                TextField(
-                  onChanged: (value3) {
-                    setState(
-                      () {
-                        valueNumberText = value3;
-                      },
-                    );
-                  },
-                  controller: _numberController,
-                  decoration: InputDecoration(hintText: "How many seats open?"),
+                Text(
+                  'Are you sure you want to delete?',
                 ),
               ],
             ),
@@ -170,9 +153,9 @@ class _MySeatsScreenState extends State<MySeatsScreen> {
                 child: Text('Delete Seat'),
                 onPressed: () async {
                   await _db
-                      .collection("locations")
-                      .doc('Library')
                       .collection("seats")
+                      //.doc('Library')
+                      //.collection("seats")
                       .doc(_auth.currentUser?.uid)
                       .delete();
 

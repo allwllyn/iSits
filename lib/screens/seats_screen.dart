@@ -88,15 +88,17 @@ class _SeatScreenState extends State<SeatScreen> {
               ),
               child: StreamBuilder(
                   stream: FirebaseFirestore.instance
-                      .collection('locations')
-                      .doc(widget.locationId)
                       .collection('seats')
+                      .where('lid', isEqualTo: widget.locationId)
                       .snapshots(),
                   builder: (context, AsyncSnapshot snapshot) {
                     if (snapshot.hasData) {
                       if (snapshot.data.docs.length < 1) {
                         return Center(
-                          child: Text("No people offering seats"),
+                          child: Text(
+                            "No people offering seats",
+                            style: TextStyle(fontSize: 20, color: Colors.white),
+                          ),
                         );
                       }
                       return ListView.builder(
@@ -139,7 +141,6 @@ class _SeatScreenState extends State<SeatScreen> {
   }
 
   void addSeat() async {
-    //await _db.collection("posts").add({"message": "Random stuff can go here"});
     _displayTextInputDialog(context);
   }
 
@@ -219,8 +220,6 @@ class _SeatScreenState extends State<SeatScreen> {
                   chatText = valueChatText;
                   describeText = valueDescribeText;
                   await _db
-                      .collection("locations")
-                      .doc(widget.locationId)
                       .collection("seats")
                       .doc(_auth.currentUser?.uid)
                       .set({
@@ -229,7 +228,8 @@ class _SeatScreenState extends State<SeatScreen> {
                     "amount": numberText,
                     "chat": chatText,
                     "description": describeText,
-                    //"uid": _auth.currentUser?.uid
+                    "lid": widget.locationId,
+                    "sid": _auth.currentUser?.uid
                   });
                   setState(() {
                     Navigator.pop(context);

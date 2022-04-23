@@ -28,8 +28,7 @@ class _SeatInfoScreenState extends State<SeatInfoScreen> {
   final _formKey = GlobalKey<FormState>();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
-  CollectionReference location =
-      FirebaseFirestore.instance.collection("locations");
+  CollectionReference location = FirebaseFirestore.instance.collection("seats");
   late String valueFloorText;
   late String valueChatText;
   late String valueNumberText;
@@ -71,8 +70,8 @@ class _SeatInfoScreenState extends State<SeatInfoScreen> {
               ),*/
             child: StreamBuilder(
                 stream: location
-                    .doc(widget.locationId)
-                    .collection('seats')
+                    //.doc(widget.locationId)
+                    //.collection('seats')
                     .doc(widget.seatId)
                     .snapshots(),
                 builder: (context, AsyncSnapshot snapshot) {
@@ -112,7 +111,7 @@ class _SeatInfoScreenState extends State<SeatInfoScreen> {
                                   minimumSize: Size(double.infinity, 50),
                                 ),
                                 onPressed: () {},
-                                child: Text('Message'),
+                                child: Text('Hold'),
                               )
                             ],
                           ),
