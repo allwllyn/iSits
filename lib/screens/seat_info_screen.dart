@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:isits/models/user.dart';
+import 'package:isits/screens/profile_screen.dart';
 import 'package:provider/provider.dart';
 
 class SeatInfoScreen extends StatefulWidget {
@@ -28,7 +29,7 @@ class _SeatInfoScreenState extends State<SeatInfoScreen> {
   final _formKey = GlobalKey<FormState>();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
-  CollectionReference location = FirebaseFirestore.instance.collection("seats");
+  CollectionReference seats = FirebaseFirestore.instance.collection("seats");
   late String valueFloorText;
   late String valueChatText;
   late String valueNumberText;
@@ -69,7 +70,7 @@ class _SeatInfoScreenState extends State<SeatInfoScreen> {
                 ),
               ),*/
             child: StreamBuilder(
-                stream: location
+                stream: seats
                     //.doc(widget.locationId)
                     //.collection('seats')
                     .doc(widget.seatId)
@@ -104,6 +105,23 @@ class _SeatInfoScreenState extends State<SeatInfoScreen> {
                                 ),
                               ),
                               Spacer(),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: Colors.lightBlue,
+                                  onPrimary: Colors.white,
+                                  minimumSize: Size(double.infinity, 50),
+                                ),
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ProfileScreen(
+                                          userId: widget.seatId,
+                                        ),
+                                      ));
+                                },
+                                child: Text('View Profile'),
+                              ),
                               ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                   primary: Colors.lightBlue,
