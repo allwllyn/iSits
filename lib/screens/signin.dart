@@ -44,7 +44,7 @@ class _SignIn extends State<SignInPage> {
   Widget build(BuildContext context) {
     final authBloc = Provider.of<AuthBloc>(context);
     return Scaffold(
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Colors.indigo.shade900,
         body: _loading
             ? LoadingPage()
             : Center(
@@ -58,9 +58,9 @@ class _SignIn extends State<SignInPage> {
                         const Text(
                           "iSits",
                           style: TextStyle(
-                            fontSize: 30.0,
-                            fontWeight: FontWeight.bold,
-                          ),
+                              fontSize: 30.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
                         ),
                         Padding(
                             padding: const EdgeInsets.symmetric(
