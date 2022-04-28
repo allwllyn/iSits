@@ -122,7 +122,7 @@ class _SeatInfoScreenState extends State<SeatInfoScreen> {
                                 },
                                 child: Text('View Profile'),
                               ),
-                              ElevatedButton(
+                              /*ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                   primary: Colors.lightBlue,
                                   onPrimary: Colors.white,
@@ -130,7 +130,7 @@ class _SeatInfoScreenState extends State<SeatInfoScreen> {
                                 ),
                                 onPressed: () {},
                                 child: Text('Hold'),
-                              )
+                              )*/
                             ],
                           ),
                         )));

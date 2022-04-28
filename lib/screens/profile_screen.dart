@@ -90,6 +90,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   color: Colors.white,
                                 ),
                               ),
+                              Image(
+                                image: NetworkImage(
+                                  //'https://picsum.photos/200')
+                                  snapshot.data['image'],
+                                ),
+                              )
                             ],
                           ),
                         )));
@@ -103,68 +109,5 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ],
       ),
     );
-  }
-
-  void message() async {
-    _displayTextInputDialog(context);
-  }
-
-  Future<void> _displayTextInputDialog(BuildContext context) async {
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text('Message user'),
-            content: Column(
-              children: <Widget>[
-                TextField(
-                  onChanged: (value) {
-                    setState(
-                      () {
-                        valueFloorText = value;
-                      },
-                    );
-                  },
-                  controller: _floorController,
-                  decoration: InputDecoration(hintText: "Floor"),
-                ),
-                TextField(
-                  onChanged: (value2) {
-                    setState(
-                      () {
-                        valueChatText = value2;
-                      },
-                    );
-                  },
-                  controller: _chatController,
-                  decoration: InputDecoration(hintText: "Open to Chat?"),
-                ),
-                TextField(
-                  onChanged: (value3) {
-                    setState(
-                      () {
-                        valueNumberText = value3;
-                      },
-                    );
-                  },
-                  controller: _numberController,
-                  decoration: InputDecoration(hintText: "How many seats open?"),
-                ),
-              ],
-            ),
-            actions: <Widget>[
-              FlatButton(
-                color: Colors.red,
-                textColor: Colors.white,
-                child: Text('CANCEL'),
-                onPressed: () {
-                  setState(() {
-                    Navigator.pop(context);
-                  });
-                },
-              ),
-            ],
-          );
-        });
   }
 }
