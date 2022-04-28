@@ -1,16 +1,22 @@
 # isits
+<img src="makeSeat.gif" width="40%" height="40%"/>
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+	Finding a free table on campus can sometimes be difficult. 
+	This is especially true during peak lunch hours. My app is 
+	intended to help GSU students quickly find someone who may 
+	have a full table to themselves, and is willing to share it.
+	The app has 4 main screens: the home screen, the seat list, 
+	seat info, and user profiles. The home screen displays the 
+	locations that are served by the app. When a location is clicked, 
+	the seat list screen is displayed. This shows seats that people 
+	are offering in the selected location. Click on of the seats, 
+	you can see a more detailed description along with how many 
+	seats are open there, in case you want to bring a friend, 
+	and if the person is open to chatting or prefers the table 
+	to stay quiet. From the seat info screen, you can view the 
+	profile of the person offering the seat. The home screen 
+	also has a leading chair button, that will show the user 
+	the current seat that they are offering, and it can be 
+	deleted here. Each user can only submit one seat at a time. 
+	If a user attempts to post multiple seats at once, 
+	the new one will just overwrite the old one.
