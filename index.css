@@ -10,8 +10,7 @@ body {
 }
 
 .gif {
-  object-fit: contain;
-  max-height: 100%;
+  max-height: fit-content;
   width: auto;
   margin-left: auto;
   margin-right: auto;
