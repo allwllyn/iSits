@@ -11,6 +11,8 @@ body {
 
 .gif {
   max-height: 90vh;
+  width: auto;
+  max-width: 50%;
   margin-left: auto;
   margin-right: auto;
 }
