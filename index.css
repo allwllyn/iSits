@@ -1,5 +1,17 @@
 body {
   background-color: rgb(10, 30, 35);
   font-family: sans-serif;
+}
+
+.header {
   color: whitesmoke;
+  letter-spacing: 2px;
+}
+
+.gif {
+  max-height: 100%;
+  max-width: 100%;
+  height: 80%;
+  margin-left: auto;
+  margin-right: auto;
 }
