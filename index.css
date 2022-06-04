@@ -1,15 +1,17 @@
 body {
-  background-color: rgb(10, 30, 35);
-  font-family: sans-serif;
-}
-
-.header {
-  color: whitesmoke;
-  text-align: center;
-  letter-spacing: 2px;
-}
-
-.gif {
-  max-height: 90vh;
-  width: auto;
-}
+    background-color: rgb(10, 30, 35);
+    font-family: sans-serif;
+  }
+  
+  .header {
+    color: whitesmoke;
+    text-align: center;
+    letter-spacing: 2px;
+  }
+  
+  .gif {
+    height: 85vh;
+    width: auto;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
